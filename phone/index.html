@@ -31,16 +31,26 @@
     });
     peer.on('open', function(id) {
         console.log('My peer ID is: ' + id);
+        document.getElementById("info").innerHTML += "My peer ID is: " + id + "<br>";
+
     });
     gyro.frequency = 10;
 
     function sendtoId() {
         console.log("sending");
+        document.getElementById("info").innerHTML += "sending<br>";
+
         var conn = peer.connect(document.getElementById("id").value);
+        conn.on('error', function(e) {
+            document.getElementById("info").innerHTML += e + "<br>";
+        });
+        peer.on('error', function(e) {
+            document.getElementById("info").innerHTML += e + "<br>";
+        });
         conn.on('open', function() {
             console.log("open");
-
-            // for (i = 0; i < 10; i++) {
+            document.getElementById("info").innerHTML += "open<br>";
+            // for (i = 0; i ss 10; i++) {
             //     conn.send("Hello world " + i);
             // }
             gyro.startTracking(function(o) {
@@ -53,6 +63,7 @@
             });
             console.log("sent");
         });
+
     }
 
 
