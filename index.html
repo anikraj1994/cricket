@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<style>
+    .bat {
+        height: 200px;
+        width: 50px;
+        color: red;
+        background: red;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+</style>
+
+<body>
+    desktop
+    <input type="button" onClick="resetValue();" value="reset" />
+    <div id="body">
+    </div>
+    <div id="x"></div>
+    <div id="y"></div>
+    <div id="z"></div>
+    <div id="a"></div>
+    <div id="b"></div>
+    <div id="g"></div>
+
+
+    <div class="bat" id="bat"></div>
+</body>
+<script src="peer.min.js"></script>
+<script>
+    addToDom("asdsad");
+
+    function addToDom(s) {
+        var x = document.createElement("p");
+        x.innerHTML = s;
+        document.getElementById("body").appendChild(x);
+    }
+    var peer = new Peer({
+        key: 'cw5qjd0axqdxi529'
+    });
+    peer.on('open', function(id) {
+        addToDom('My peer ID is: ' + id);
+    });
+    var x = document.getElementById("x");
+    var y = document.getElementById("y");
+    var z = document.getElementById("z");
+    var a = document.getElementById("a");
+    var b = document.getElementById("b");
+    var g = document.getElementById("g");
+    var bat = document.getElementById("bat");
+
+
+    x.innerHTML = "asd";
+    y.innerHTML = "asd";
+    z.innerHTML = "asd";
+    a.innerHTML = "asd";
+    b.innerHTML = "asd";
+    g.innerHTML = "asd";
+
+    peer.on('connection', function(conn) {
+        console.log("onconn");
+        conn.on('open', function(xx) {
+            console.log("onconn open");
+            conn.on('data', function(data) {
+                // Will print 'hi!'
+                // console.log("oncon datan " + data);
+                // addToDom(data);
+                loadData(data)
+            });
+        });
+    });
+    var prevRotation = 0.0;
+    var reset = 0.0;
+    async function loadData(data) {
+        // console.log(data);
+        var dataSplitted = data.split(" ");
+        // console.log("values\n");
+        // console.log(dataSplitted[0]);
+        // console.log(dataSplitted[1]);
+        // console.log(dataSplitted[2]);
+        // console.log(dataSplitted[3]);
+        // console.log("values end\n");
+        x.innerHTML = dataSplitted[0];
+        y.innerHTML = dataSplitted[1];
+        z.innerHTML = dataSplitted[2];
+        a.innerHTML = dataSplitted[3];
+        b.innerHTML = dataSplitted[4];
+        g.innerHTML = dataSplitted[5];
+        if (Math.abs(prevRotation - parseFloat(dataSplitted[3])) > 1) {
+            prevRotation = parseFloat(dataSplitted[3]) - reset;
+            bat.style.transform = "rotate(" + (parseFloat(dataSplitted[3]) - reset) + "deg)";
+        } else {
+            console.log(Math.abs(prevRotation - parseFloat(dataSplitted[3])));
+        }
+    }
+
+    function resetValue() {
+        reset = prevRotation;
+        bat.style.transform = "rotate(0deg)";
+    }
+</script>
+
+</html>

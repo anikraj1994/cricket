@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+<style>
+
+</style>
+
+<body>
+    phonjhe
+    <input id="id" placeholder="id" type="text" />
+    <input type="button" onClick="sendtoId();" value="submit" />
+    <input type="button" onClick="scan();" value="scan" />
+    <div id="info"></div>
+    <video id="preview"></video>
+</body>
+<script src="/peer.min.js"></script>
+<script src="/gyro.min.js"></script>
+<script src="/qcode-decoder.min.js"></script>
+
+<script>
+    var peer = new Peer({
+        key: 'cw5qjd0axqdxi529'
+    });
+    peer.on('open', function(id) {
+        console.log('My peer ID is: ' + id);
+    });
+    gyro.frequency = 10;
+
+    function sendtoId() {
+        console.log("sending");
+        var conn = peer.connect(document.getElementById("id").value);
+        conn.on('open', function() {
+            console.log("open");
+
+            // for (i = 0; i < 10; i++) {
+            //     conn.send("Hello world " + i);
+            // }
+            gyro.startTracking(function(o) {
+                // o.x, o.y, o.z for accelerometer
+                // o.alpha, o.beta, o.gamma for gyro
+                conn.send(o.x + " " + o.y + " " + o.z + " " + o.alpha + " " + o.beta + " " + o.gamma);
+                // console.log(" " + o.x);
+
+
+            });
+            console.log("sent");
+        });
+    }
+
+
+    function scan() {
+        // document.getElementById('preview').hidden = false;
+        var video =
+            document.getElementById('preview');
+
+        QCodeDecoder()
+            .decodeFromCamera(video, function(er, res) {
+
+                document.getElementById("info").innerHTML = er;
+                console.log(res);
+                document.getElementById("id").value = res;
+            });
+    }
+</script>
+
+</html>
