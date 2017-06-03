@@ -24,6 +24,9 @@
     <input type="button" onClick="resetValue();" value="reset" />
     <div id="body">
     </div>
+    <div id="qrcode"></div>
+    <script type="text/javascript">
+    </script>
     <div id="x"></div>
     <div id="y"></div>
     <div id="z"></div>
@@ -35,6 +38,7 @@
     <div class="bat" id="bat"></div>
 </body>
 <script src="peer.min.js"></script>
+<script src="qrcode.min.js"></script>
 <script>
     addToDom("asdsad");
 
@@ -48,6 +52,7 @@
     });
     peer.on('open', function(id) {
         addToDom('My peer ID is: ' + id);
+        new QRCode(document.getElementById("qrcode"), id);
     });
     var x = document.getElementById("x");
     var y = document.getElementById("y");

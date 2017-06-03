@@ -57,7 +57,7 @@
 
 
     function scan() {
-        // document.getElementById('preview').hidden = false;
+        document.getElementById('preview').hidden = false;
         // var video =
         //     document.getElementById('preview');
 
@@ -76,6 +76,9 @@
         scanner.addListener('scan', function(content) {
             console.log(content);
             document.getElementById("id").value = content;
+            scanner.stop();
+            document.getElementById('preview').hidden = true;
+
         });
         Instascan.Camera.getCameras().then(function(cameras) {
             if (cameras.length > 0) {
