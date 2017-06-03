@@ -13,7 +13,7 @@
 </style>
 
 <body>
-    phonjhe
+    phon
     <input id="id" placeholder="id" type="text" />
     <input type="button" onClick="sendtoId();" value="submit" />
     <input type="button" onClick="scan();" value="scan" />
@@ -81,9 +81,12 @@
                 scanner.start(cameras[0]);
             } else {
                 console.error('No cameras found.');
+                document.getElementById("id").innerHTML += 'No cameras found.';
+
             }
         }).catch(function(e) {
             console.error(e);
+            document.getElementById("id").innerHTML += e;
         });
     }
 </script>
