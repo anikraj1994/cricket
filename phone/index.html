@@ -23,6 +23,7 @@
 <script src="/peer.min.js"></script>
 <script src="/gyro.min.js"></script>
 <script src="/qcode-decoder.min.js"></script>
+<script src="/instascan.min.js"></script>
 
 <script>
     var peer = new Peer({
@@ -57,16 +58,33 @@
 
     function scan() {
         // document.getElementById('preview').hidden = false;
-        var video =
-            document.getElementById('preview');
+        // var video =
+        //     document.getElementById('preview');
 
-        QCodeDecoder()
-            .decodeFromCamera(video, function(er, res) {
+        // QCodeDecoder()
+        //     .decodeFromCamera(video, function(er, res) {
 
-                document.getElementById("info").innerHTML = er;
-                console.log(res);
-                document.getElementById("id").value = res;
-            });
+        //         document.getElementById("info").innerHTML = er;
+        //         console.log(res);
+        //         document.getElementById("id").value = res;
+        //     });
+
+        let scanner = new Instascan.Scanner({
+            video: document.getElementById('preview')
+        });
+        scanner.addListener('scan', function(content) {
+            console.log(content);
+            document.getElementById("id").value = content;
+        });
+        Instascan.Camera.getCameras().then(function(cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function(e) {
+            console.error(e);
+        });
     }
 </script>
 
